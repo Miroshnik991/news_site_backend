@@ -14,6 +14,11 @@ class Post extends Model
         return $this->hasMany(PostTag::class);
     }
 
+    public function users()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     protected $fillable = [
       'title',
       'content',

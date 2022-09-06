@@ -9,11 +9,6 @@ class PostTag extends Model
 {
     use HasFactory;
 
-    public function users()
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function tags()
     {
         return $this->belongsTo(Tag::class);
