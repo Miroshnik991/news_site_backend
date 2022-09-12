@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PostTag extends Model
+class PosTtag extends Model
 {
     use HasFactory;
 
-    public function tags()
+    public function tag()
     {
-        return $this->belongsTo(Tag::class);
+        return $this->belongsTo(Tags::class);
     }
     
-    public function posts()
+    public function post()
     {
         return $this->belongsTo(Post::class);
     }

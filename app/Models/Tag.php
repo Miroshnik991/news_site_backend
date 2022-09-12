@@ -9,9 +9,11 @@ class Tag extends Model
 {
     use HasFactory;
 
-    public function postsTags()
+    protected $hidden = ['pivot'];
+
+    public function posts()
     {
-        return $this->hasMany(PostTag::class);
+        return $this->belongsToMany(Post::class);
     }
 
     protected $fillable = [
