@@ -9,12 +9,12 @@ class Post extends Model
 {
     use HasFactory;
 
-    public function postTags()
+    public function tags()
     {
-        return $this->hasMany(PostTag::class);
+        return $this->belongsToMany(Tag::class);
     }
 
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
