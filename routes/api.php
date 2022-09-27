@@ -6,6 +6,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\Posttag;
 use App\Http\Controllers\API\PassportController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,5 @@ use App\Http\Controllers\API\PassportController;
 Route::group(['namespace' => 'API'], function () {
 	Route::post('register', [PassportController::class, 'register']);
 	Route::post('login', [PassportController::class, 'login']);
-	Route::post('logout', 'AuthController@logout')->middleware('auth:api');
 });
-
 Route::resource('posts', PostController::class);
