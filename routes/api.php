@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\Posttag;
+use App\Http\Controllers\API\PassportController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,5 +19,8 @@ use App\Http\Controllers\Posttag;
 |
 */
 
-
+Route::group(['namespace' => 'API'], function () {
+	Route::post('register', [PassportController::class, 'register']);
+	Route::post('login', [PassportController::class, 'login']);
+});
 Route::resource('posts', PostController::class);
