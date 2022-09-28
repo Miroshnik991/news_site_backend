@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
 use Validator;
  
 class PassportController extends Controller
@@ -19,10 +20,10 @@ class PassportController extends Controller
         if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){
             $user = Auth::user();
             $token =  $user->createToken('MyApp')->accessToken;
-            return response()->json(['user' => $user, 'token'=>$token], 200);
+            return response()->json(['user' => $user, 'token'=>$token], JsonResponse::HTTP_OK);
         }
         else{
-            return response()->json(['error'=>'Unauthorised'], 401);
+            return response()->json(['error'=>'Unauthorised'], JsonResponse::HTTP_UNAUTHORIZED);
         }
     }
  
@@ -40,7 +41,7 @@ class PassportController extends Controller
         ]);
  
         if ($validator->fails()) {
-            return response()->json(['error'=>$validator->errors()], 401);            
+            return response()->json(['error'=>$validator->errors()], JsonResponse::HTTP_BAD_REQUEST);            
         }
  
         $input = $request->all();
@@ -48,7 +49,7 @@ class PassportController extends Controller
         $user = User::create($input);
         $token =  $user->createToken('MyApp')->accessToken;
  
-        return response()->json(['user'=>$user, 'token'=>$token], 201);
+        return response()->json(['user'=>$user, 'token'=>$token], JsonResponse::HTTP_CREATED);
     }
  
     /**
@@ -59,6 +60,6 @@ class PassportController extends Controller
     public function getDetails()
     {
         $user = Auth::user();
-        return response()->json(['user' => $user], 200);
+        return response()->json(['user' => $user], JsonResponse::HTTP_OK);
     }
 }
