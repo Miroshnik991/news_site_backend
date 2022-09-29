@@ -10,9 +10,11 @@ class UserController extends Controller
 {
     public function show($id)
     {
-      $user =  User::where('id', '=', $id)->first();
-      $posts =  Post::with('user', 'tags')->where('user_id', '=', $user -> id)->get();
-      return response()->json(['user' => $user, 'posts' => $posts]);
-
+      $user = User::find($id);
+      $posts = $user->posts;
+      $posts->load(['tags'=> function($query) {
+        $query->select('tag_name', 'tag_id as id');
+      }]);
+      return response()->json($user);
     }
-}
+  }
