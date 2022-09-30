@@ -60,10 +60,8 @@ class PostController extends Controller
                  $post->tags()->create([
                  'tag_name' => $newTag,
                  ]);
-         
-         return $post->load(['tags'=> function($query) {
-            $query->select('tag_name', 'tag_id as id');
-          }]);
+
+        return Post::with('tags')->orderby('id', 'desc')->first();
     }
 
     /**
