@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Tag;
 
 class PostController extends Controller
 {
@@ -36,7 +37,34 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-      //
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'user_id' => 'required',
+            'image' => 'required'
+        ]);
+
+        $post = Post::create([
+                'title' => $request->title,
+                'content' => $request->content,
+                'user_id' => $request->user_id,
+                'image'  => $request->image,
+                            ]);
+                            
+        $newTags = explode(" ", $request->tags);
+
+        foreach($newTags as $newTag) {
+            $tagInDb = Tag::where('tag_name', '=', $newTag)->first();
+            if ($tagInDb) {
+                $post->tags()->attach($tagInDb->id);
+            } else {
+                $post->tags()->create([
+                    'tag_name' => $newTag,
+                    ]);
+            }  
+        }
+
+        return Post::with('tags')->orderby('id', 'desc')->first();
     }
 
     /**
