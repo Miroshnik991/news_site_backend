@@ -43,23 +43,26 @@ class PostController extends Controller
             'user_id' => 'required',
             'image' => 'required'
         ]);
+
         $post = Post::create([
                 'title' => $request->title,
                 'content' => $request->content,
                 'user_id' => $request->user_id,
                 'image'  => $request->image,
                             ]);
+                            
         $newTags = explode(" ", $request->tags);
-        $currentTags = Tag::all();
-        foreach($currentTags as $tag)
-            if (in_array($tag->tag_name, $newTags)) {
-                $post->tags()->attach($tag->id);
-                unset($newTags[array_search($tag->tag_name, $newTags)]);
-            }
-        foreach($newTags as $newTag)
-                 $post->tags()->create([
-                 'tag_name' => $newTag,
-                 ]);
+
+        foreach($newTags as $newTag) {
+            $tagInDb = Tag::where('tag_name', '=', $newTag)->first();
+            if ($tagInDb) {
+                $post->tags()->attach($tagInDb->id);
+            } else {
+                $post->tags()->create([
+                    'tag_name' => $newTag,
+                    ]);
+            }  
+        }
 
         return Post::with('tags')->orderby('id', 'desc')->first();
     }
