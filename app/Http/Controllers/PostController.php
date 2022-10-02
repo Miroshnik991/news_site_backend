@@ -43,7 +43,7 @@ class PostController extends Controller
             'user_id' => 'required',
             'image' => 'required'
         ]);
-
+        
         $post = Post::create([
                 'title' => $request->title,
                 'content' => $request->content,
@@ -64,7 +64,7 @@ class PostController extends Controller
             }  
         }
 
-        return Post::with('tags')->orderby('id', 'desc')->first();
+         return Post::with('tags')->orderby('id', 'desc')->first();
     }
 
     /**

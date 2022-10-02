@@ -17,4 +17,16 @@ class UserController extends Controller
       }]);
       return response()->json($user);
     }
+
+    public function update(Request $request, $id)
+    {
+      $request->validate([
+        'name' => 'required',
+    ]);
+
+      $user = User::find($id);
+      $user->update(['name' => $request->name]);
+
+      return $user;
+    }
   }
