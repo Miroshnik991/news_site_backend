@@ -31,4 +31,4 @@ Route::resource('posts', PostController::class);
 
 Route::get('users/{id}', [UserController::class, 'show']);
 
-Route::post('users/{id}', [UserController::class, 'update']);
+Route::patch('users/{id}', [UserController::class, 'update']);
