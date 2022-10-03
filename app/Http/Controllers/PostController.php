@@ -44,11 +44,18 @@ class PostController extends Controller
             'image' => 'required'
         ]);
         
+        $imgName = $_FILES['image']['name'];
+        $tmp_name = $_FILES['image']['tmp_name'];
+        $uploaddir = 'images/';
+        $uploadfile = $uploaddir . basename($imgName);
+
+        (move_uploaded_file($tmp_name, $uploadfile));
+
         $post = Post::create([
                 'title' => $request->title,
                 'content' => $request->content,
                 'user_id' => $request->user_id,
-                'image'  => $request->image,
+                'image'  => '/'.$uploaddir.$imgName,
                             ]);
                             
         $newTags = explode(" ", $request->tags);
