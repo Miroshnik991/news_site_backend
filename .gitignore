@@ -15,4 +15,5 @@ yarn-error.log
 /.idea
 /.vscode
 /public/images
+/public/avatars
 #fff

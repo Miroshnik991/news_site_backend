@@ -22,11 +22,29 @@ class UserController extends Controller
     {
       $request->validate([
         'name' => 'required',
+        'avatar' => 'nullable',
     ]);
 
-      $user = User::find($id);
-      $user->update(['name' => $request->name]);
+    $user = User::find($id);
 
+      if (empty($_FILES)) {
+        $user->update([
+          'name' => $request->name,
+        ]);
+   } else {
+      $avatarName = $_FILES['avatar']['name'];
+      $tmpName = $_FILES['avatar']['tmp_name'];
+      $avatarsDirectory = 'avatars/';
+      $fullAvatarPath = $avatarsDirectory . basename($avatarName);
+
+      move_uploaded_file($tmpName, $fullAvatarPath);
+
+      $user->update([
+        'name' => $request->name,
+        'avatar' => '/'.$avatarsDirectory.$avatarName,
+      ]);
+   }
+   
       return $user;
     }
   }
