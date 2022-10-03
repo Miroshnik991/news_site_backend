@@ -43,12 +43,19 @@ class PostController extends Controller
             'user_id' => 'required',
             'image' => 'required'
         ]);
+        
+        $imgName = $_FILES['image']['name'];
+        $tmpName = $_FILES['image']['tmp_name'];
+        $imagesDirectory = 'images/';
+        $fullImagePath = $imagesDirectory . basename($imgName);
+
+        move_uploaded_file($tmpName, $fullImagePath);
 
         $post = Post::create([
                 'title' => $request->title,
                 'content' => $request->content,
                 'user_id' => $request->user_id,
-                'image'  => $request->image,
+                'image'  => '/'.$imagesDirectory.$imgName,
                             ]);
                             
         $newTags = explode(" ", $request->tags);
@@ -64,7 +71,7 @@ class PostController extends Controller
             }  
         }
 
-        return Post::with('tags')->orderby('id', 'desc')->first();
+         return Post::with('tags')->orderby('id', 'desc')->first();
     }
 
     /**

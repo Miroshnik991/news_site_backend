@@ -18,7 +18,6 @@ use App\Http\Controllers\UserController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 Route::group(['namespace' => 'API'], function () {
 	Route::post('register', [PassportController::class, 'register']);
 	Route::post('login', [PassportController::class, 'login']);
@@ -30,4 +29,5 @@ Route::group(['middleware'=>'auth:api'],function(){
 
 Route::resource('posts', PostController::class);
 
-Route::get('users/{id}', [UserController::class, 'show']);
+Route::resource('users', UserController::class);
+
