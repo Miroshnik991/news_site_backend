@@ -29,6 +29,5 @@ Route::group(['middleware'=>'auth:api'],function(){
 
 Route::resource('posts', PostController::class);
 
-Route::get('users/{id}', [UserController::class, 'show']);
+Route::resource('users', UserController::class);
 
-Route::patch('users/{id}', [UserController::class, 'update']);
