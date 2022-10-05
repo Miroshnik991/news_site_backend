@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Post;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -27,24 +29,17 @@ class UserController extends Controller
 
     $user = User::find($id);
 
-      if (empty($_FILES)) {
-        $user->update([
-          'name' => $request->name,
-        ]);
-   } else {
-      $avatarName = $_FILES['avatar']['name'];
-      $tmpName = $_FILES['avatar']['tmp_name'];
-      $avatarsDirectory = 'avatars/';
-      $fullAvatarPath = $avatarsDirectory . basename($avatarName);
+    $userData = [
+      'name' => $request->name,
+    ];
+    
+    if ($request->hasFile('avatar')) { 
+      $path =  $request->file('avatar')->storeAs('avatars', $request->avatar->getClientOriginalName(), 'public');
+      $userData['avatar'] = '/storage/' . $path;
+    } 
 
-      move_uploaded_file($tmpName, $fullAvatarPath);
+    $user->update($userData);
 
-      $user->update([
-        'name' => $request->name,
-        'avatar' => '/'.$avatarsDirectory.$avatarName,
-      ]);
-   }
-   
       return $user;
     }
   }
