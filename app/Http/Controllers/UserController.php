@@ -22,10 +22,21 @@ class UserController extends Controller
     {
       $request->validate([
         'name' => 'required',
+        'avatar' => 'nullable',
     ]);
 
-      $user = User::find($id);
-      $user->update(['name' => $request->name]);
+    $user = User::find($id);
+
+    $userData = [
+      'name' => $request->name,
+    ];
+    
+    if ($request->hasFile('avatar')) { 
+      $path =  $request->file('avatar')->storeAs('avatars', $request->avatar->getClientOriginalName(), 'public');
+      $userData['avatar'] = '/storage/' . $path;
+    } 
+
+    $user->update($userData);
 
       return $user;
     }
